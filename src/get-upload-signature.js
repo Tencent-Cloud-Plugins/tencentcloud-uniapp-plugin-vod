@@ -19,7 +19,7 @@
  * @async
  * @return {Promise<string>} 签名信息
  */
-export default async function getUploadSignature() {
+export default async function getUploadSignature(callback) {
   // 调用云函数来获取签名信息
   const { result } = await uniCloud.callFunction({
     name: 'tencentcloud-plugin',
@@ -28,5 +28,10 @@ export default async function getUploadSignature() {
       action: 'getUploadSignature',
     },
   });
+  // #ifdef H5
   return result;
+  // #endif
+  // #ifdef MP-WEIXIN
+  return callback(result);
+  // #endif
 };
